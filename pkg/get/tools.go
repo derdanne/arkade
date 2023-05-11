@@ -3487,5 +3487,73 @@ https://github.com/{{.Owner}}/{{.Repo}}/releases/download/{{.Version}}/{{.Name}}
 				{{- end -}}
 				https://github.com/{{.Owner}}/{{.Repo}}/releases/download/{{.Version}}/{{.Name}}-cli_{{.Version}}_{{$os}}_{{$arch}}.{{$extStr}}`,
 		})
+
+	tools = append(tools,
+		Tool{
+			Owner:       "project-copacetic",
+			Repo:        "copacetic",
+			Name:        "copa",
+			Description: "CLI tool for directly patching container images using reports from vulnerability scanners",
+			BinaryTemplate: `
+				{{$arch := .Arch}}
+				{{$ext := "tar.gz"}}
+
+				{{- if eq .Arch "x86_64" -}}
+				{{ $arch = "amd64" }}
+				{{- end -}}
+
+				{{.Name}}_{{.VersionNumber}}_{{.OS}}_{{$arch}}.{{$ext}}
+				`,
+		})
+
+	tools = append(tools,
+		Tool{
+			Owner:       "moby",
+			Repo:        "buildkit",
+			Name:        "buildctl",
+			Description: "Concurrent, cache-efficient, and Dockerfile-agnostic builder toolkit daemon",
+			BinaryTemplate: `
+				{{$arch := .Arch}}
+				{{$ext := "tar.gz"}}
+
+				{{- if eq .OS "darwin" -}}
+					{{- if eq .Arch "aarch64" -}}
+					{{ $arch = "arm64" }}
+					{{- else if eq .Arch "arm64" -}}
+					{{ $arch = "arm64" }}
+					{{- else -}}
+					{{ $arch = "amd64" }}
+					{{- end -}}
+				{{- else if eq .Arch "armv7l" -}}
+				{{ $arch = "arm-v7" }}
+				{{- else if eq .Arch "aarch64" -}}
+				{{ $arch = "arm64" }}
+				{{- else if eq .Arch "x86_64" -}}
+				{{ $arch = "amd64" }}
+				{{- else -}}
+				{{ $arch = "amd64" }}
+				{{- end -}}
+
+				buildkit-{{.Version}}.{{.OS}}-{{$arch}}.{{$ext}}
+				`,
+		})
+
+	tools = append(tools,
+		Tool{
+			Owner:       "moby",
+			Repo:        "buildkit",
+			Name:        "buildkit",
+			Description: "Concurrent, cache-efficient, and Dockerfile-agnostic builder toolkit",
+			BinaryTemplate: `
+				{{$arch := .Arch}}
+				{{$ext := "tar.gz"}}
+
+				{{- if eq .Arch "x86_64" -}}
+				{{ $arch = "amd64" }}
+				{{- end -}}
+
+				buildkit-{{.Version}}.{{.OS}}-{{$arch}}.{{$ext}}
+				`,
+		})
 	return tools
 }
